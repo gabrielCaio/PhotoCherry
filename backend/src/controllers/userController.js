@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const User = require('../models/user')
+const Post = require('../models/post')
 
 module.exports = {
     async store(req, res) {
@@ -14,7 +15,7 @@ module.exports = {
         return res.send("User Deleted Successfully")
     },
 
-    async show(req, res) {
+    async showOne(req, res) {
         const user = await User.findById(req.params.id)
 
         return res.json(user)
@@ -34,7 +35,23 @@ module.exports = {
 
         if(!user) return res.send("User not found")
 
-        return res.send("User Logged Successfully")
+        return res.send(user)
+    },
+
+    async showAll(req, res) {
+        const users = await User.find()
+
+        return res.json(users)
+    },
+
+    async userPosts(req, res) {
+        const userID = req.headers.authorization
+
+        const { username } = await User.findById(userID)
+
+        const posts = await Post.find({ author: username })
+
+        return res.json(posts)
     }
 
 }

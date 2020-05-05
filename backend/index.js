@@ -3,7 +3,6 @@
 const express = require('express')
 const router = require('./src/routes')
 const morgan = require('morgan')
-const multer = require('multer')
 const mongoose = require('mongoose')
 const gridfs = require('gridfs-stream')
 const crypto = require('crypto')
@@ -28,7 +27,6 @@ conn.on('error', console.error.bind(console, 'connection error:'));
 const app = express()
 
 app.use(express.json())
-// app.use(express.urlencoded({ extended:true }))
 app.use(morgan('dev'))
 
 //-------------------------Save Images on mongoDB by gridFS lib-----------------------//
@@ -50,6 +48,7 @@ conn.once('open', () => {
         writestream.on('close', function (file) {
             res.send('File Created : ' + file.filename);
         });
+
     });
     
     app.get('/read/:name', async (req, res) => {
@@ -65,6 +64,7 @@ conn.once('open', () => {
                 readstream.pipe(res);
             }
         });
+
     });
     
     app.delete('/delete/:id', async (req, res) => {
@@ -82,6 +82,7 @@ conn.once('open', () => {
                 });
             }
         });
+        
     });
 })
 

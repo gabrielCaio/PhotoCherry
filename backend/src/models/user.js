@@ -32,7 +32,6 @@ const userSchema = new mongoose.Schema({
     },
     bio: String,
     age: Number,
-    posts: [String]
 
 })
 
